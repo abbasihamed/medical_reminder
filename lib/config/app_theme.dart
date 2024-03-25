@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
- static ThemeData get theme {
+  static ThemeData get theme {
     return ThemeData(
       primaryColor: const Color(0XFF8B2FFE),
       scaffoldBackgroundColor: const Color(0xFFE6E6E6),
@@ -14,7 +14,14 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0XFFD7D7D7),
-      )
+        selectedItemColor: Color(0XFFAB7CEE),
+        unselectedItemColor: Color(0XFF989898),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Color(0XFF8B2FFE),
+        iconSize: 36,
+        shape: CircleBorder(),
+      ),
     );
   }
 }

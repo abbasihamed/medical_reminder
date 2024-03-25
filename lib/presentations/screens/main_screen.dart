@@ -1,77 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:medical_reminder/core/extentions.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medical_reminder/presentations/cubits/bottomnav/bottomnav_cubit.dart';
+import 'package:medical_reminder/presentations/screens/home_scrren.dart';
+import 'package:medical_reminder/presentations/widgets/custom_bottom_navigation.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final customNav = context.read<BottomnavCubit>();
     return Scaffold(
-      body: const Column(
-        children: [],
+      body: BlocBuilder<BottomnavCubit, BottomnavState>(
+        builder: (context, state) {
+          if (state is BottomnavInitial) {
+            return state.scrren;
+          }
+          return const HomeScreen();
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          customNav.go('addEvent');
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomNavBar(
-        items: [
-          CustomNavItem(
-            icons: Icons.home_outlined,
-            onTap: () {},
-          ),
-          CustomNavItem(
-            icons: Icons.date_range_outlined,
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomNavItem extends StatelessWidget {
-  final IconData icons;
-  final VoidCallback onTap;
-  const CustomNavItem({
-    super.key,
-    required this.icons,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Icon(
-        icons,
-        size: 34,
-      ),
-    );
-  }
-}
-
-class CustomNavBar extends StatelessWidget {
-  final List<CustomNavItem> items;
-  const CustomNavBar({
-    super.key,
-    required this.items,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 80,
-      margin: const EdgeInsets.only(bottom: 30, left: 12, right: 12),
-      decoration: BoxDecoration(
-        color: context.theme().bottomNavigationBarTheme.backgroundColor,
-        borderRadius: BorderRadius.circular(36),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: items,
+      bottomNavigationBar: BlocBuilder<BottomnavCubit, BottomnavState>(
+        builder: (context, state) {
+          return CustomNavBar(
+            items: [
+              CustomNavItem(
+                icons: Icons.home_outlined,
+                selected: state.screenName == 'home',
+                onTap: () {
+                  customNav.go('home');
+                },
+              ),
+              CustomNavItem(
+                icons: Icons.date_range_outlined,
+                selected: state.screenName == 'events',
+                onTap: () {
+                  customNav.go('events');
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -11,13 +11,16 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final customNav = context.read<BottomnavCubit>();
     return Scaffold(
-      body: BlocBuilder<BottomnavCubit, BottomnavState>(
-        builder: (context, state) {
-          if (state is BottomnavInitial) {
-            return state.scrren;
-          }
-          return const HomeScreen();
-        },
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocBuilder<BottomnavCubit, BottomnavState>(
+          builder: (context, state) {
+            if (state is BottomnavInitial) {
+              return state.scrren;
+            }
+            return const HomeScreen();
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

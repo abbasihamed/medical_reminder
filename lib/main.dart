@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         theme: AppTheme.theme,
         title: "دستاری پزشکی",
+        locale: const Locale('fa'),
         home: const MainScreen(),
       ),
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/presentations/screens/add_event_screen.dart';
 import 'package:medical_reminder/presentations/screens/events_screen.dart';
-import 'package:medical_reminder/presentations/screens/home_scrren.dart';
+import 'package:medical_reminder/presentations/screens/home_screen.dart';
 
 part 'bottomnav_state.dart';
 
@@ -36,7 +36,7 @@ class BottomnavCubit extends Cubit<BottomnavState> {
         emit(BottomnavInitial(const HomeScreen(), _screenList.last));
         break;
       case 'addEvent':
-        emit(BottomnavInitial(const AddEventScrren(), _screenList.last));
+        emit(BottomnavInitial(const AddEventscreen(), _screenList.last));
         break;
       case 'events':
         emit(BottomnavInitial(const EventsScreen(), _screenList.last));

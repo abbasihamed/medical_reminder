@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/presentations/cubits/bottomnav/bottomnav_cubit.dart';
-import 'package:medical_reminder/presentations/screens/home_scrren.dart';
+import 'package:medical_reminder/presentations/screens/add_event_screen.dart';
+import 'package:medical_reminder/presentations/screens/home_screen.dart';
 import 'package:medical_reminder/presentations/widgets/custom_bottom_navigation.dart';
 
 class MainScreen extends StatelessWidget {
@@ -25,7 +26,12 @@ class MainScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          customNav.go('addEvent');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddEventscreen(),
+            ),
+          );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

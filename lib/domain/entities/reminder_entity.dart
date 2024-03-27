@@ -1,29 +1,27 @@
-import 'package:equatable/equatable.dart';
+import 'package:floor/floor.dart';
+import 'package:medical_reminder/core/constants/constants.dart';
 
-class ReminderEntity extends Equatable {
+@Entity(tableName: tableName)
+class ReminderEntity {
+  @PrimaryKey(autoGenerate: true)
+  int? id;
   final String pillName;
-  final String date;
-  final String time;
+  final String dateTime;
   final String useMode;
-  const ReminderEntity({
+  ReminderEntity({
     required this.pillName,
-    required this.date,
-    required this.time,
+    required this.dateTime,
     required this.useMode,
   });
-  @override
-  List<Object> get props => [pillName, date, time, useMode];
 
   ReminderEntity copyWith({
     String? pillName,
-    String? date,
-    String? time,
+    String? dateTime,
     String? useMode,
   }) {
     return ReminderEntity(
       pillName: pillName ?? this.pillName,
-      date: date ?? this.date,
-      time: time ?? this.time,
+      dateTime: dateTime ?? this.dateTime,
       useMode: useMode ?? this.useMode,
     );
   }
@@ -32,8 +30,7 @@ class ReminderEntity extends Equatable {
     final result = <String, dynamic>{};
 
     result.addAll({'pillName': pillName});
-    result.addAll({'date': date});
-    result.addAll({'time': time});
+    result.addAll({'date': dateTime});
     result.addAll({'useMode': useMode});
 
     return result;
@@ -41,6 +38,6 @@ class ReminderEntity extends Equatable {
 
   @override
   String toString() {
-    return 'ReminderEntity(pillName: $pillName, date: $date, time: $time, useMode: $useMode)';
+    return 'ReminderEntity(pillName: $pillName, date: $dateTime,  useMode: $useMode)';
   }
 }

@@ -9,5 +9,5 @@ class AddEventInitial extends AddEventState {}
 class Validations extends AddEventState {
   final bool isValid;
 
-  const Validations(this.isValid);
+  Validations(this.isValid);
 }

@@ -35,3 +35,12 @@ extension MyTheme on BuildContext {
     }
   }
 }
+
+extension Number on String? {
+  int toInt() {
+    if (this != null && this!.isNotEmpty) {
+      return int.parse(this!);
+    }
+    return 0;
+  }
+}

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/config/app_theme.dart';
+import 'package:medical_reminder/locator.dart';
 import 'package:medical_reminder/presentations/cubits/add_event/add_event_cubit.dart';
 import 'package:medical_reminder/presentations/cubits/bottomnav/bottomnav_cubit.dart';
 import 'package:medical_reminder/presentations/screens/main_screen.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setup();
   runApp(const MyApp());
 }
 

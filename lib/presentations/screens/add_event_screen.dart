@@ -15,9 +15,16 @@ class AddEventscreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: BlocListener<AddEventCubit, AddEventState>(
+        listenWhen: (previous, current) => true,
         listener: (context, state) {
           if (state is Validations) {
-            context.snackBar(const Text('مقادر به درستی وارد نشده اند.'));
+            if (state.isValid) {
+              context.snackBar(const Text('ایتم اضافه شد.'));
+              Navigator.pop(context);
+            } else {
+              context
+                  .snackBar(const Text('مطمئن شوید تمام مقادیر وارد شده اند.'));
+            }
           }
         },
         child: Scaffold(
@@ -100,7 +107,7 @@ class _AddEventBodyState extends State<AddEventBody> {
                 context
                     .read<AddEventCubit>()
                     .setEventData(pillName: pillNameController.text);
-                context.read<AddEventCubit>().validateData();
+                context.read<AddEventCubit>().saveData();
               },
             )
           ],
@@ -132,7 +139,7 @@ class _UseDateState extends State<UseDate> {
         if (picked != null) {
           date =
               '${picked.year.toString()}/${picked.month.toString()}/${picked.day.toString()}';
-          context.read<AddEventCubit>().setEventData(date: date);
+          context.read<AddEventCubit>().setDateTime(date: picked);
         }
         setState(() {});
       },
@@ -170,6 +177,13 @@ class _HowToUseState extends State<HowToUse> {
     'همراه از غذا',
   ];
   int selected = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<AddEventCubit>().setEventData(useMode: useTime[0]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.textThem().headlineMedium;
@@ -297,8 +311,8 @@ class _PillTimeState extends State<PillTime> {
                 );
               },
             );
-            context.read<AddEventCubit>().setEventData(
-                time: hourController.text + minutesController.text);
+            context.read<AddEventCubit>().setDateTime(
+                time: '${hourController.text} : ${minutesController.text}');
           },
           child: Container(
             height: 60,

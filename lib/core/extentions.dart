@@ -18,6 +18,10 @@ extension MyTheme on BuildContext {
     return MediaQuery.sizeOf(this).height;
   }
 
+  snackBar(Widget message) {
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: message));
+  }
+
   TextDirection txtDirection(String text) {
     if (text.isEmpty) {
       Directionality.of(this) == TextDirection.rtl;

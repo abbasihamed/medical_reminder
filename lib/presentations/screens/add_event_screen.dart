@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
+import 'package:medical_reminder/presentations/cubits/add_event/add_event_cubit.dart';
 import 'package:medical_reminder/presentations/widgets/custom_button.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:time_picker_spinner/time_picker_spinner.dart';
 
 class AddEventscreen extends StatelessWidget {
@@ -11,18 +14,25 @@ class AddEventscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('اضافه کردن رویداد'),
-        ),
-        body: Align(
-          alignment: Alignment.topCenter,
-          child: Image.asset(
-            'assets/images/medical.png',
-            height: 200,
+      child: BlocListener<AddEventCubit, AddEventState>(
+        listener: (context, state) {
+          if (state is Validations) {
+            context.snackBar(const Text('مقادر به درستی وارد نشده اند.'));
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('اضافه کردن رویداد'),
           ),
+          body: Align(
+            alignment: Alignment.topCenter,
+            child: Image.asset(
+              'assets/images/medical.png',
+              height: 200,
+            ),
+          ),
+          bottomSheet: const AddEventBody(),
         ),
-        bottomSheet: const AddEventBody(),
       ),
     );
   }
@@ -76,15 +86,67 @@ class _AddEventBodyState extends State<AddEventBody> {
               ),
             ),
             const SizedBox(height: 12),
+            Text('روز مصرف', style: context.textThem().labelMedium),
+            const UseDate(),
+            const SizedBox(height: 12),
             const PillTime(),
             const SizedBox(height: 12),
             Text('نحوه استفاده', style: context.textThem().labelMedium),
             const HowToUse(),
             const SizedBox(height: 50),
-            const CustomButton(
+            CustomButton(
               title: 'اضافه کردن',
+              onTap: () {
+                context
+                    .read<AddEventCubit>()
+                    .setEventData(pillName: pillNameController.text);
+                context.read<AddEventCubit>().validateData();
+              },
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class UseDate extends StatefulWidget {
+  const UseDate({super.key});
+
+  @override
+  State<UseDate> createState() => _UseDateState();
+}
+
+class _UseDateState extends State<UseDate> {
+  String date = 'تاریخ مورد نظر';
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        Jalali? picked = await showPersianDatePicker(
+          context: context,
+          initialDate: Jalali.now(),
+          firstDate: Jalali.now(),
+          lastDate: Jalali(1450, 9),
+        );
+        if (picked != null) {
+          date =
+              '${picked.year.toString()}/${picked.month.toString()}/${picked.day.toString()}';
+          context.read<AddEventCubit>().setEventData(date: date);
+        }
+        setState(() {});
+      },
+      child: Container(
+        height: 60,
+        width: context.width(),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: const Color(0XFFE6E6E6),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Text(
+          date,
+          style: context.textThem().headlineMedium,
         ),
       ),
     );
@@ -130,54 +192,24 @@ class _HowToUseState extends State<HowToUse> {
                   color: const Color(0XFFE6E6E6),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TextButton(
+                child: ListView.builder(
+                  itemCount: useTime.length,
+                  itemBuilder: (context, index) {
+                    return TextButton(
                       onPressed: () {
-                        selected = 0;
+                        selected = index;
                         overlayController.hide();
+                        context
+                            .read<AddEventCubit>()
+                            .setEventData(useMode: useTime[index]);
                         setState(() {});
                       },
                       child: Text(
-                        useTime[0],
+                        useTime[index],
                         style: theme,
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        selected = 1;
-                        overlayController.hide();
-                        setState(() {});
-                      },
-                      child: Text(
-                        useTime[1],
-                        style: theme,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        selected = 2;
-                        overlayController.hide();
-                        setState(() {});
-                      },
-                      child: Text(
-                        useTime[2],
-                        style: theme,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        selected = 3;
-                        overlayController.hide();
-                        setState(() {});
-                      },
-                      child: Text(
-                        useTime[3],
-                        style: theme,
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -225,8 +257,8 @@ class _PillTimeState extends State<PillTime> {
       children: [
         Text('زمان مصرف', style: context.textThem().labelMedium),
         GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
+          onTap: () async {
+            await showModalBottomSheet(
               context: context,
               constraints: const BoxConstraints(maxHeight: 250),
               builder: (context) {
@@ -265,6 +297,8 @@ class _PillTimeState extends State<PillTime> {
                 );
               },
             );
+            context.read<AddEventCubit>().setEventData(
+                time: hourController.text + minutesController.text);
           },
           child: Container(
             height: 60,

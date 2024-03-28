@@ -337,8 +337,8 @@ class PillTime extends StatefulWidget {
 }
 
 class _PillTimeState extends State<PillTime> {
-  final hourController = TextEditingController(text: '00');
-  final minutesController = TextEditingController(text: '00');
+  String hour = '00';
+  String minutes = '00';
   final clockFormat = [
     FilteringTextInputFormatter.digitsOnly,
     LengthLimitingTextInputFormatter(2),
@@ -373,8 +373,9 @@ class _PillTimeState extends State<PillTime> {
                       ),
                       onTimeChange: (time) {
                         setState(() {});
-                        minutesController.text = time.minute.toString();
-                        hourController.text = time.hour.toString();
+                        minutes =
+                            time.minute.floor().toString().padLeft(2, '0');
+                        hour = time.hour.floor().toString().padLeft(2, '0');
                       },
                     ),
                     Padding(
@@ -390,8 +391,9 @@ class _PillTimeState extends State<PillTime> {
                 );
               },
             );
-            context.read<AddEventCubit>().setEventData(
-                time: '${hourController.text} : ${minutesController.text}');
+            context
+                .read<AddEventCubit>()
+                .setEventData(time: '$hour : $minutes');
           },
           child: Container(
             height: 60,
@@ -401,25 +403,16 @@ class _PillTimeState extends State<PillTime> {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: minutesController,
-                    textAlign: TextAlign.center,
-                    inputFormatters: clockFormat,
-                    readOnly: true,
-                    keyboardType: TextInputType.number,
-                  ),
+                Text(
+                  minutes,
+                  style: context.textThem().headlineMedium,
                 ),
                 const Text(':'),
-                Expanded(
-                  child: TextFormField(
-                    controller: hourController,
-                    textAlign: TextAlign.center,
-                    inputFormatters: clockFormat,
-                    readOnly: true,
-                    keyboardType: TextInputType.number,
-                  ),
+                Text(
+                  hour,
+                  style: context.textThem().headlineMedium,
                 ),
               ],
             ),

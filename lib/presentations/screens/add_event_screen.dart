@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
 import 'package:medical_reminder/presentations/cubits/add_event/add_event_cubit.dart';
@@ -54,6 +56,7 @@ class AddEventBody extends StatefulWidget {
 
 class _AddEventBodyState extends State<AddEventBody> {
   final pillNameController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +103,27 @@ class _AddEventBodyState extends State<AddEventBody> {
             const SizedBox(height: 12),
             Text('نحوه استفاده', style: context.textThem().labelMedium),
             const HowToUse(),
+            const SizedBox(height: 24),
+            TextFormField(
+              maxLength: 150,
+              minLines: 1,
+              maxLines: 5,
+              controller: descriptionController,
+              keyboardType: TextInputType.multiline,
+              textDirection: context.txtDirection(pillNameController.text),
+              onChanged: (value) => setState(() {}),
+              decoration: const InputDecoration(
+                hintText: 'توضیحات (اختیاری)',
+              ),
+            ),
             const SizedBox(height: 50),
             CustomButton(
               title: 'اضافه کردن',
               onTap: () {
-                context
-                    .read<AddEventCubit>()
-                    .setEventData(pillName: pillNameController.text);
+                context.read<AddEventCubit>().setEventData(
+                      pillName: pillNameController.text,
+                      description: descriptionController.text,
+                    );
                 context.read<AddEventCubit>().saveData();
               },
             )
@@ -177,60 +194,89 @@ class _HowToUseState extends State<HowToUse> {
     'همراه از غذا',
   ];
   int selected = 0;
+  int count = 1;
+
+  late AddEventCubit setEvent;
 
   @override
   void initState() {
     super.initState();
-    context.read<AddEventCubit>().setEventData(useMode: useTime[0]);
+    setEvent = context.read<AddEventCubit>();
+    setEvent.setEventData(
+      useMode: useTime[0],
+      count: count.toString(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = context.textThem().headlineMedium;
-    return InkWell(
-      onTap: () {
-        overlayController.toggle();
-      },
-      child: OverlayPortal(
-        controller: overlayController,
-        overlayChildBuilder: (BuildContext context) {
-          return Positioned(
-            top: 0,
-            child: CompositedTransformFollower(
-              link: overlayLink,
-              offset: const Offset(0, 65),
-              child: Container(
-                height: 200,
-                width: context.width() - 24,
-                decoration: BoxDecoration(
-                  color: const Color(0XFFE6E6E6),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: ListView.builder(
-                  itemCount: useTime.length,
-                  itemBuilder: (context, index) {
-                    return TextButton(
-                      onPressed: () {
-                        selected = index;
-                        overlayController.hide();
-                        context
-                            .read<AddEventCubit>()
-                            .setEventData(useMode: useTime[index]);
-                        setState(() {});
-                      },
-                      child: Text(
-                        useTime[index],
-                        style: theme,
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: InkWell(
+            onTap: () {
+              overlayController.toggle();
+            },
+            child: OverlayPortal(
+              controller: overlayController,
+              overlayChildBuilder: (BuildContext context) {
+                return Positioned(
+                  top: 0,
+                  child: CompositedTransformFollower(
+                    link: overlayLink,
+                    offset: const Offset(0, 65),
+                    child: Container(
+                      height: 200,
+                      width: context.width() - 24,
+                      decoration: BoxDecoration(
+                        color: const Color(0XFFE6E6E6),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    );
-                  },
+                      child: ListView.builder(
+                        itemCount: useTime.length,
+                        itemBuilder: (context, index) {
+                          return TextButton(
+                            onPressed: () {
+                              selected = index;
+                              overlayController.hide();
+                              setEvent.setEventData(useMode: useTime[index]);
+                              setState(() {});
+                            },
+                            child: Text(
+                              useTime[index],
+                              style: theme,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: CompositedTransformTarget(
+                link: overlayLink,
+                child: Container(
+                  height: 60,
+                  width: context.width(),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color(0XFFE6E6E6),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    useTime[selected],
+                    style: theme,
+                  ),
                 ),
               ),
             ),
-          );
-        },
-        child: CompositedTransformTarget(
-          link: overlayLink,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 1,
           child: Container(
             height: 60,
             width: context.width(),
@@ -239,13 +285,32 @@ class _HowToUseState extends State<HowToUse> {
               color: const Color(0XFFE6E6E6),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Text(
-              useTime[selected],
-              style: theme,
+            child: Chip(
+              deleteIcon: const Icon(Icons.add),
+              onDeleted: () {
+                count++;
+                setEvent.setEventData(count: count.toString());
+                setState(() {});
+              },
+              avatar: InkWell(
+                onTap: () {
+                  count--;
+                  setEvent.setEventData(count: count.toString());
+                  setState(() {});
+                },
+                child: const Icon(
+                  Icons.remove,
+                  color: Colors.black,
+                ),
+              ),
+              label: Text(
+                count.toString(),
+                style: theme,
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

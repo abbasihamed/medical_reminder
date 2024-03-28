@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `reminderTB` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `pillName` TEXT NOT NULL, `dateTime` TEXT NOT NULL, `useMode` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `reminderTB` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `pillName` TEXT NOT NULL, `dateTime` TEXT NOT NULL, `useMode` TEXT NOT NULL, `count` TEXT NOT NULL, `description` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -111,7 +111,9 @@ class _$ReminderDao extends ReminderDao {
                   'id': item.id,
                   'pillName': item.pillName,
                   'dateTime': item.dateTime,
-                  'useMode': item.useMode
+                  'useMode': item.useMode,
+                  'count': item.count,
+                  'description': item.description
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -128,7 +130,9 @@ class _$ReminderDao extends ReminderDao {
         mapper: (Map<String, Object?> row) => ReminderEntity(
             pillName: row['pillName'] as String,
             dateTime: row['dateTime'] as String,
-            useMode: row['useMode'] as String));
+            useMode: row['useMode'] as String,
+            count: row['count'] as String,
+            description: row['description'] as String?));
   }
 
   @override

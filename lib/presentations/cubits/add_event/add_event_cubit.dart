@@ -14,8 +14,10 @@ class AddEventCubit extends Cubit<AddEventState> {
   AddEventCubit() : super(AddEventInitial());
   ReminderEntity _reminderEntity = ReminderEntity(
     pillName: '',
-    dateTime: Jalali(0).toDateTime().toIso8601String(),
     useMode: '',
+    count: '',
+    description: '',
+    dateTime: Jalali(0).toDateTime().toIso8601String(),
   );
 
   Jalali _date = Jalali(0);
@@ -23,10 +25,14 @@ class AddEventCubit extends Cubit<AddEventState> {
   void setEventData({
     String? pillName,
     String? useMode,
+    String? count,
+    String? description,
   }) {
     _reminderEntity = _reminderEntity.copyWith(
       pillName: pillName,
       useMode: useMode,
+      count: count,
+      description: description,
     );
   }
 
@@ -49,6 +55,7 @@ class AddEventCubit extends Cubit<AddEventState> {
         dateTime: _date.toDateTime().toIso8601String());
     if (_reminderEntity.pillName.isNotEmpty &&
         _reminderEntity.useMode.isNotEmpty &&
+        _reminderEntity.count.isNotEmpty &&
         _date.year != 0) {
       saveReminderInDb();
     } else {

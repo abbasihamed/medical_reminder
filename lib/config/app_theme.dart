@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -52,6 +53,13 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
+      ),
+      chipTheme: const ChipThemeData(
+        backgroundColor: Colors.transparent,
+        side: BorderSide.none,
+        color: MaterialStatePropertyAll( Color(0XFFE6E6E6)),
+        disabledColor: Colors.transparent,
+        shadowColor: Colors.transparent,
       ),
       textTheme: const TextTheme(
         headlineMedium: TextStyle(

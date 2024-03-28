@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:medical_reminder/core/extentions.dart';
 import 'package:medical_reminder/core/resource/data_state.dart';
 import 'package:medical_reminder/domain/entities/reminder_entity.dart';
 import 'package:medical_reminder/domain/usecase/insert_reminder.dart';
@@ -17,46 +16,35 @@ class AddEventCubit extends Cubit<AddEventState> {
     useMode: '',
     count: '',
     description: '',
-    dateTime: Jalali(0).toDateTime().toIso8601String(),
+    time: '',
+    date: Jalali(0).toDateTime().toIso8601String(),
   );
-
-  Jalali _date = Jalali(0);
 
   void setEventData({
     String? pillName,
     String? useMode,
     String? count,
+    Jalali? date,
+    String? time,
     String? description,
   }) {
     _reminderEntity = _reminderEntity.copyWith(
       pillName: pillName,
       useMode: useMode,
       count: count,
+      date: date != null
+          ? date.toDateTime().toIso8601String()
+          : _reminderEntity.date,
+      time: time,
       description: description,
     );
   }
 
-  void setDateTime({
-    Jalali? date,
-    String? time,
-  }) {
-    if (date != null) {
-      _date = _date.copy(year: date.year, month: date.month, day: date.day);
-    }
-    if (time != null) {
-      _date = _date.copy(
-          hour: time.split(':').first.toInt(),
-          minute: time.split(':').last.toInt());
-    }
-  }
-
   saveData() {
-    _reminderEntity = _reminderEntity.copyWith(
-        dateTime: _date.toDateTime().toIso8601String());
     if (_reminderEntity.pillName.isNotEmpty &&
         _reminderEntity.useMode.isNotEmpty &&
         _reminderEntity.count.isNotEmpty &&
-        _date.year != 0) {
+        _reminderEntity.date.isNotEmpty) {
       saveReminderInDb();
     } else {
       emit(Validations(false));

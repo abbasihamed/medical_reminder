@@ -18,7 +18,18 @@ class ReminderRepositoryImpl implements ReminderRepository {
       await _reminderDao.insertData(reminderEntity);
       return const DataSuccess(true);
     } catch (e) {
-      return const DataFaild(false);
+      return const DataFaild('');
+    }
+  }
+
+  @override
+  Future<DataState<List<ReminderEntity?>>> getByDate(String date) async {
+    try {
+      final result = await _reminderDao.getByDate(date);
+      print(result);
+      return  DataSuccess(result);
+    } catch (e) {
+      return  DataFaild(e.toString());
     }
   }
 }

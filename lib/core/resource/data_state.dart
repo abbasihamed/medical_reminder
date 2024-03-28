@@ -1,6 +1,6 @@
 abstract class DataState<T> {
   final T? data;
-  final T? error;
+  final String? error;
   const DataState({this.data, this.error});
 }
 
@@ -9,5 +9,5 @@ class DataSuccess<T> extends DataState<T> {
 }
 
 class DataFaild<T> extends DataState<T> {
-  const DataFaild(T error) : super(error: error);
+  const DataFaild(String error) : super(error: error);
 }

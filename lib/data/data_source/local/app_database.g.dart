@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `reminderTB` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `pillName` TEXT NOT NULL, `dateTime` TEXT NOT NULL, `useMode` TEXT NOT NULL, `count` TEXT NOT NULL, `description` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `reminderTB` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `pillName` TEXT NOT NULL, `date` TEXT NOT NULL, `time` TEXT NOT NULL, `useMode` TEXT NOT NULL, `count` TEXT NOT NULL, `description` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -110,7 +110,8 @@ class _$ReminderDao extends ReminderDao {
             (ReminderEntity item) => <String, Object?>{
                   'id': item.id,
                   'pillName': item.pillName,
-                  'dateTime': item.dateTime,
+                  'date': item.date,
+                  'time': item.time,
                   'useMode': item.useMode,
                   'count': item.count,
                   'description': item.description
@@ -129,10 +130,24 @@ class _$ReminderDao extends ReminderDao {
     return _queryAdapter.queryList('SELECT * FROM reminderTB',
         mapper: (Map<String, Object?> row) => ReminderEntity(
             pillName: row['pillName'] as String,
-            dateTime: row['dateTime'] as String,
+            date: row['date'] as String,
+            time: row['time'] as String,
             useMode: row['useMode'] as String,
             count: row['count'] as String,
             description: row['description'] as String?));
+  }
+
+  @override
+  Future<List<ReminderEntity?>> getByDate(String date) async {
+    return _queryAdapter.queryList('SELECT * FROM reminderTB WHERE date = ?1',
+        mapper: (Map<String, Object?> row) => ReminderEntity(
+            pillName: row['pillName'] as String,
+            date: row['date'] as String,
+            time: row['time'] as String,
+            useMode: row['useMode'] as String,
+            count: row['count'] as String,
+            description: row['description'] as String?),
+        arguments: [date]);
   }
 
   @override

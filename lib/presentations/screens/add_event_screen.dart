@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
 import 'package:medical_reminder/presentations/cubits/add_event/add_event_cubit.dart';
+import 'package:medical_reminder/presentations/cubits/manage_reminder/managereminder_cubit.dart';
 import 'package:medical_reminder/presentations/widgets/custom_button.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:time_picker_spinner/time_picker_spinner.dart';
@@ -22,6 +21,9 @@ class AddEventscreen extends StatelessWidget {
           if (state is Validations) {
             if (state.isValid) {
               context.snackBar(const Text('ایتم اضافه شد.'));
+              context
+                  .read<ManagereminderCubit>()
+                  .getByDate(Jalali.now().toDateTime().toIso8601String());
               Navigator.pop(context);
             } else {
               context
@@ -156,7 +158,7 @@ class _UseDateState extends State<UseDate> {
         if (picked != null) {
           date =
               '${picked.year.toString()}/${picked.month.toString()}/${picked.day.toString()}';
-          context.read<AddEventCubit>().setDateTime(date: picked);
+          context.read<AddEventCubit>().setEventData(date: picked);
         }
         setState(() {});
       },
@@ -285,28 +287,40 @@ class _HowToUseState extends State<HowToUse> {
               color: const Color(0XFFE6E6E6),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Chip(
-              deleteIcon: const Icon(Icons.add),
-              onDeleted: () {
-                count++;
-                setEvent.setEventData(count: count.toString());
-                setState(() {});
-              },
-              avatar: InkWell(
-                onTap: () {
-                  count--;
-                  setEvent.setEventData(count: count.toString());
-                  setState(() {});
-                },
-                child: const Icon(
-                  Icons.remove,
-                  color: Colors.black,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                InkWell(
+                  onTap: () {
+                    if (count >= 1) {
+                      count--;
+                      setEvent.setEventData(count: count.toString());
+                      setState(() {});
+                    }
+                  },
+                  child: const Icon(
+                    Icons.remove,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              label: Text(
-                count.toString(),
-                style: theme,
-              ),
+                Text(
+                  count.toString(),
+                  style: theme,
+                ),
+                InkWell(
+                  onTap: () {
+                    if (count <= 9) {
+                      count++;
+                      setEvent.setEventData(count: count.toString());
+                      setState(() {});
+                    }
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -376,7 +390,7 @@ class _PillTimeState extends State<PillTime> {
                 );
               },
             );
-            context.read<AddEventCubit>().setDateTime(
+            context.read<AddEventCubit>().setEventData(
                 time: '${hourController.text} : ${minutesController.text}');
           },
           child: Container(

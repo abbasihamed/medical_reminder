@@ -9,4 +9,7 @@ abstract class ReminderDao {
 
   @Query("SELECT * FROM $tableName")
   Future<List<ReminderEntity?>> getAllReminders();
+
+  @Query("SELECT * FROM $tableName WHERE date = :date")
+  Future<List<ReminderEntity?>> getByDate(String date);
 }

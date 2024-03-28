@@ -6,13 +6,15 @@ class ReminderEntity {
   @PrimaryKey(autoGenerate: true)
   int? id;
   final String pillName;
-  final String dateTime;
+  final String date;
+  final String time;
   final String useMode;
   final String count;
   final String? description;
   ReminderEntity({
     required this.pillName,
-    required this.dateTime,
+    required this.date,
+    required this.time,
     required this.useMode,
     required this.count,
     this.description,
@@ -20,14 +22,16 @@ class ReminderEntity {
 
   ReminderEntity copyWith({
     String? pillName,
-    String? dateTime,
+    String? date,
+    String? time,
     String? useMode,
     String? count,
     String? description,
   }) {
     return ReminderEntity(
       pillName: pillName ?? this.pillName,
-      dateTime: dateTime ?? this.dateTime,
+      date: date ?? this.date,
+      time: time ?? this.time,
       useMode: useMode ?? this.useMode,
       count: count ?? this.count,
       description: description ?? this.description,
@@ -38,7 +42,7 @@ class ReminderEntity {
     final result = <String, dynamic>{};
 
     result.addAll({'pillName': pillName});
-    result.addAll({'date': dateTime});
+    result.addAll({'date': date});
     result.addAll({'useMode': useMode});
     result.addAll({'count': count});
     result.addAll({'description': description});
@@ -48,6 +52,6 @@ class ReminderEntity {
 
   @override
   String toString() {
-    return 'ReminderEntity(pillName: $pillName, date: $dateTime,  useMode: $useMode)';
+    return 'ReminderEntity(pillName: $pillName, date: $date, time: $time ,useMode: $useMode description: $description)';
   }
 }

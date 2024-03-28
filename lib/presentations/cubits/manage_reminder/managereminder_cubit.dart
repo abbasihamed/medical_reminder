@@ -12,6 +12,7 @@ class ManagereminderCubit extends Cubit<ManagereminderState> {
   ManagereminderCubit() : super(ManagereminderInitial());
 
   void getByDate(String date) async {
+    emit(GetAllTodayReminderLoader());
     final result = await _byDateUseCase(date);
     if (result is DataSuccess) {
       emit(GetAllTodayReminder(result.data!));

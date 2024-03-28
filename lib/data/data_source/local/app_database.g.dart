@@ -139,7 +139,8 @@ class _$ReminderDao extends ReminderDao {
 
   @override
   Future<List<ReminderEntity?>> getByDate(String date) async {
-    return _queryAdapter.queryList('SELECT * FROM reminderTB WHERE date = ?1',
+    return _queryAdapter.queryList(
+        'SELECT * FROM reminderTB WHERE date = ?1 ORDER BY time ASC',
         mapper: (Map<String, Object?> row) => ReminderEntity(
             pillName: row['pillName'] as String,
             date: row['date'] as String,

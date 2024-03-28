@@ -60,6 +60,12 @@ class AppTheme {
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.normal,
         ),
+        bodyLarge: TextStyle(
+          fontSize: 22,
+          color: Color(0XFF313536),
+          fontWeight: FontWeight.w500,
+          fontStyle: FontStyle.normal,
+        ),
         labelLarge: TextStyle(
           fontSize: 22,
           color: Color(0XFFF7F5FF),

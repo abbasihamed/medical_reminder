@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:medical_reminder/core/extentions.dart';
 
@@ -13,7 +15,11 @@ class CustomNavBar extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 80,
-      margin: const EdgeInsets.only(bottom: 30, left: 12, right: 12),
+      margin: EdgeInsets.only(
+        bottom: Platform.isAndroid ? 10 : 30,
+        left: 12,
+        right: 12,
+      ),
       decoration: BoxDecoration(
         color: context.theme().bottomNavigationBarTheme.backgroundColor,
         borderRadius: BorderRadius.circular(36),

@@ -80,7 +80,7 @@ class _AddEventBodyState extends State<AddEventBody> {
           children: [
             Text('نام دارو', style: context.textThem().labelMedium),
             TextFormField(
-              maxLength: 100,
+              maxLength: 60,
               minLines: 1,
               maxLines: 1,
               controller: pillNameController,

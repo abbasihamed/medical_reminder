@@ -20,14 +20,19 @@ class AddEventscreen extends StatelessWidget {
         listener: (context, state) {
           if (state is Validations) {
             if (state.isValid) {
-              context.snackBar(const Text('ایتم اضافه شد.'));
+              context.snackBar(const Text(
+                'ایتم اضافه شد.',
+                textDirection: TextDirection.rtl,
+              ));
               context
                   .read<ManagereminderCubit>()
                   .getByDate(Jalali.now().toDateTime().toIso8601String());
               Navigator.pop(context);
             } else {
-              context
-                  .snackBar(const Text('مطمئن شوید تمام مقادیر وارد شده اند.'));
+              context.snackBar(const Text(
+                'مطمئن شوید تمام مقادیر وارد شده اند.',
+                textDirection: TextDirection.rtl,
+              ));
             }
           }
         },

@@ -7,9 +7,15 @@ class ReminderRepositoryImpl implements ReminderRepository {
   final ReminderDao _reminderDao;
   const ReminderRepositoryImpl(this._reminderDao);
   @override
-  Future<List<ReminderEntity?>> getAllReminders() async {
-    // TODO: implement getAllReminders
-    throw UnimplementedError();
+  Future<DataState<List<ReminderEntity?>>> getAllReminders() async {
+    try {
+      final result = await _reminderDao.getAllReminders();
+      print(result);
+      return DataSuccess(result);
+    } catch (e) {
+      print(e.toString());
+      return DataFaild(e.toString());
+    }
   }
 
   @override

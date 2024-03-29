@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:medical_reminder/core/extentions.dart';
 import 'package:medical_reminder/presentations/cubits/manage_reminder/managereminder_cubit.dart';
+import 'package:medical_reminder/presentations/widgets/app_loading.dart';
 
 class HomeItem extends StatelessWidget {
   const HomeItem({super.key});
@@ -13,14 +13,7 @@ class HomeItem extends StatelessWidget {
       child: BlocBuilder<ManagereminderCubit, ManagereminderState>(
         builder: (context, state) {
           if (state is GetAllTodayReminderLoader) {
-            return Center(
-              child: LoadingAnimationWidget.discreteCircle(
-                color: Colors.white,
-                secondRingColor: context.theme().primaryColor,
-                thirdRingColor: context.theme().colorScheme.primary,
-                size: 50,
-              ),
-            );
+            return const AppLoading();
           }
           if (state is GetAllTodayReminder) {
             if (state.remindersList.isEmpty) {

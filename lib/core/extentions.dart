@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 extension MyTheme on BuildContext {
   ThemeData theme() {
@@ -42,5 +43,17 @@ extension Number on String? {
       return int.parse(this!);
     }
     return 0;
+  }
+
+  String dateToStr() {
+    final gDate = DateTime.parse(this!);
+    final jDate = gDate.toJalali();
+    return '${jDate.year}/${jDate.month}/${jDate.day}';
+  }
+
+  String dayName() {
+    final gDate = DateTime.parse(this!);
+    final jDate = gDate.toJalali();
+    return jDate.formatter.d;
   }
 }

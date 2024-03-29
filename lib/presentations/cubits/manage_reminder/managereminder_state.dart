@@ -10,3 +10,10 @@ class GetAllTodayReminder extends ManagereminderState {
   final List<ReminderEntity?> remindersList;
   GetAllTodayReminder(this.remindersList);
 }
+
+class GetAllReminderLoader extends ManagereminderState {}
+
+class GetAllReminder extends ManagereminderState {
+  final List<ReminderEntity?> remindersList;
+  GetAllReminder(this.remindersList);
+}

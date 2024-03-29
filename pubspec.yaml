@@ -41,6 +41,7 @@ dependencies:
   time_picker_spinner: ^0.0.1
   floor: ^1.4.2
   get_it: ^7.6.7
+  loading_animation_widget: ^1.2.1
 
 dev_dependencies:
   flutter_test:

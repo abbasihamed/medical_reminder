@@ -27,9 +27,10 @@ class ReminderRepositoryImpl implements ReminderRepository {
     try {
       final result = await _reminderDao.getByDate(date);
       print(result);
-      return  DataSuccess(result);
+      return DataSuccess(result);
     } catch (e) {
-      return  DataFaild(e.toString());
+      print(e.toString());
+      return DataFaild(e.toString());
     }
   }
 }

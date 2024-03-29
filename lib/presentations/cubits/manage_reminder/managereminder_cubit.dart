@@ -17,6 +17,8 @@ class ManagereminderCubit extends Cubit<ManagereminderState> {
     if (result is DataSuccess) {
       emit(GetAllTodayReminder(result.data!));
     }
-    if (result is DataFaild) {}
+    if (result is DataFaild) {
+      emit(GetAllTodayReminder([]));
+    }
   }
 }

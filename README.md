@@ -12,3 +12,10 @@
 :small_blue_diamond: Delete reminder
 
 :small_blue_diamond: Notification
+
+## ScreenShots
+<div>
+<img src="https://github.com/abbasihamed/medical_reminder/blob/main/assets/screenshots/add_reminder.png" width="200" />
+<img src="https://github.com/abbasihamed/medical_reminder/blob/main/assets/screenshots/home_empty.png" width="200" />
+<img src="https://github.com/abbasihamed/medical_reminder/blob/main/assets/screenshots/timeline_reminder.png" width="200" />
+</div>

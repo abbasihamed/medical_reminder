@@ -9,8 +9,6 @@
 
 :small_blue_diamond: User information
 
-:small_blue_diamond: Delete reminder
-
 :small_blue_diamond: Notification
 
 ## ScreenShots

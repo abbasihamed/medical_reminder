@@ -1,16 +1,14 @@
-# medical_reminder
+# Medical reminder
 
-A new Flutter project.
 
-## Getting Started
+### Application to remind to take the pills prescribed by the doctor
 
-This project is a starting point for a Flutter application.
+**Cubit**, **GetIt**, **Floor** plugins are used
 
-A few resources to get you started if this is your first Flutter project:
+### This application is still under development and may contain bugs, and the following will be added to it:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+:small_blue_diamond: User information
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+:small_blue_diamond: Delete reminder
+
+:small_blue_diamond: Notification

@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
         theme: AppTheme.theme,
-        title: "دستاری پزشکی",
+        title: "دستیاری پزشکی",
         locale: const Locale('fa'),
         home: const MainScreen(),
       ),

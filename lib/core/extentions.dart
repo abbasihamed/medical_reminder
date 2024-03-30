@@ -20,7 +20,10 @@ extension MyTheme on BuildContext {
   }
 
   snackBar(Widget message) {
-    ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: message));
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(
+      content: message,
+      behavior: SnackBarBehavior.floating,
+    ));
   }
 
   TextDirection txtDirection(String text) {

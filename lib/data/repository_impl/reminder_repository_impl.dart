@@ -10,7 +10,6 @@ class ReminderRepositoryImpl implements ReminderRepository {
   Future<DataState<List<ReminderEntity?>>> getAllReminders() async {
     try {
       final result = await _reminderDao.getAllReminders();
-      print(result);
       return DataSuccess(result);
     } catch (e) {
       print(e.toString());
@@ -32,11 +31,20 @@ class ReminderRepositoryImpl implements ReminderRepository {
   Future<DataState<List<ReminderEntity?>>> getByDate(String date) async {
     try {
       final result = await _reminderDao.getByDate(date);
-      print(result);
       return DataSuccess(result);
     } catch (e) {
       print(e.toString());
       return DataFaild(e.toString());
+    }
+  }
+
+  @override
+  Future<DataState<bool>> deleteById(int id) async {
+    try {
+      await _reminderDao.deleteById(id);
+      return  const DataSuccess(true);
+    } catch (e) {
+      return const DataFaild('');
     }
   }
 }

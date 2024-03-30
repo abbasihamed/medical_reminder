@@ -12,6 +12,7 @@ class ReminderEntity {
   final String count;
   final String? description;
   ReminderEntity({
+    this.id,
     required this.pillName,
     required this.date,
     required this.time,

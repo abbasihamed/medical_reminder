@@ -3,6 +3,7 @@ import 'package:medical_reminder/core/constants/constants.dart';
 import 'package:medical_reminder/data/data_source/local/app_database.dart';
 import 'package:medical_reminder/data/repository_impl/reminder_repository_impl.dart';
 import 'package:medical_reminder/domain/repository/reminder_repository.dart';
+import 'package:medical_reminder/domain/usecase/delete_by_id.dart';
 import 'package:medical_reminder/domain/usecase/get_all_reminder.dart';
 import 'package:medical_reminder/domain/usecase/get_by_date.dart';
 import 'package:medical_reminder/domain/usecase/insert_reminder.dart';
@@ -24,4 +25,7 @@ Future<void> setup() async {
 
   locator.registerLazySingleton<GetAllReminderUseCase>(
       () => GetAllReminderUseCase(locator()));
+
+  locator.registerLazySingleton<DeleteReminderByIdUseCase>(
+      () => DeleteReminderByIdUseCase(locator()));
 }

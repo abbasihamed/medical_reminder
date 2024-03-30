@@ -129,6 +129,7 @@ class _$ReminderDao extends ReminderDao {
   Future<List<ReminderEntity?>> getAllReminders() async {
     return _queryAdapter.queryList('SELECT * FROM reminderTB',
         mapper: (Map<String, Object?> row) => ReminderEntity(
+            id: row['id'] as int?,
             pillName: row['pillName'] as String,
             date: row['date'] as String,
             time: row['time'] as String,
@@ -142,6 +143,7 @@ class _$ReminderDao extends ReminderDao {
     return _queryAdapter.queryList(
         'SELECT * FROM reminderTB WHERE date = ?1 ORDER BY time ASC',
         mapper: (Map<String, Object?> row) => ReminderEntity(
+            id: row['id'] as int?,
             pillName: row['pillName'] as String,
             date: row['date'] as String,
             time: row['time'] as String,
@@ -149,6 +151,12 @@ class _$ReminderDao extends ReminderDao {
             count: row['count'] as String,
             description: row['description'] as String?),
         arguments: [date]);
+  }
+
+  @override
+  Future<void> deleteById(int id) async {
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM reminderTB WHERE id = ?1', arguments: [id]);
   }
 
   @override

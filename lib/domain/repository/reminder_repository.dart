@@ -5,4 +5,5 @@ abstract class ReminderRepository {
   Future<DataState<bool>> insertReminder(ReminderEntity reminderEntity);
    Future<DataState<List<ReminderEntity?>>> getAllReminders();
   Future<DataState<List<ReminderEntity?>>> getByDate(String date);
+  Future<DataState<bool>> deleteById(int id);
 }

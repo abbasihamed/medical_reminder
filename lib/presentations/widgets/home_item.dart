@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
@@ -27,9 +28,12 @@ class HomeItem extends StatelessWidget {
                 bottom: 36,
               ),
               itemBuilder: (context, index) {
-                return ReminderItem(
-                  state: state,
-                  index: index,
+                return DeleteItem(
+                  id: state.remindersList[index]!.id!,
+                  child: ReminderItem(
+                    state: state,
+                    index: index,
+                  ),
                 );
               },
             );
@@ -37,6 +41,41 @@ class HomeItem extends StatelessWidget {
           return Image.asset('assets/images/empty_reminder.png');
         },
       ),
+    );
+  }
+}
+
+class DeleteItem extends StatelessWidget {
+  final int id;
+  final Widget child;
+  const DeleteItem({super.key, required this.id, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: Key(id.toString()),
+      onDismissed: (direction) {
+        context.read<ManagereminderCubit>().deleteById(id);
+      },
+      dragStartBehavior: DragStartBehavior.start,
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        height: 100,
+        width: context.width(),
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.all(12),
+        alignment: Alignment.centerRight,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Icon(
+          Icons.delete,
+          size: 34,
+          color: context.theme().colorScheme.primary,
+        ),
+      ),
+      child: child,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/resource/data_state.dart';
 import 'package:medical_reminder/domain/entities/reminder_entity.dart';
+import 'package:medical_reminder/domain/usecase/delete_by_id.dart';
 import 'package:medical_reminder/domain/usecase/get_all_reminder.dart';
 import 'package:medical_reminder/domain/usecase/get_by_date.dart';
 import 'package:medical_reminder/locator.dart';
@@ -12,6 +13,8 @@ class ManagereminderCubit extends Cubit<ManagereminderState> {
       locator<GetReminderByDateUseCase>();
   final GetAllReminderUseCase _allReminderUseCase =
       locator<GetAllReminderUseCase>();
+  final DeleteReminderByIdUseCase _deleteReminderByIdUseCase =
+      locator<DeleteReminderByIdUseCase>();
   ManagereminderCubit() : super(ManagereminderInitial());
 
   void getByDate(String date) async {
@@ -33,6 +36,14 @@ class ManagereminderCubit extends Cubit<ManagereminderState> {
     }
     if (result is DataFaild) {
       emit(GetAllReminder([]));
+    }
+  }
+
+  void deleteById(int id) async {
+    final result = _deleteReminderByIdUseCase(id);
+    if (result is DataSuccess) {}
+    if (result is DataFaild) {
+      emit(DeleteReminderError());
     }
   }
 }

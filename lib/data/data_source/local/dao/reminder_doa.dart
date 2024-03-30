@@ -12,4 +12,7 @@ abstract class ReminderDao {
 
   @Query("SELECT * FROM $tableName WHERE date = :date ORDER BY time ASC")
   Future<List<ReminderEntity?>> getByDate(String date);
+
+  @Query("DELETE FROM $tableName WHERE id = :id")
+  Future<void> deleteById(int id);
 }

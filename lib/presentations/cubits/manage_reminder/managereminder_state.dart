@@ -17,3 +17,5 @@ class GetAllReminder extends ManagereminderState {
   final List<ReminderEntity?> remindersList;
   GetAllReminder(this.remindersList);
 }
+
+class DeleteReminderError extends ManagereminderState {}

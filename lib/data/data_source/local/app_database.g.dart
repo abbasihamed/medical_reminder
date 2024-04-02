@@ -63,13 +63,15 @@ class _$AppDatabase extends AppDatabase {
 
   ReminderDao? _reminderDaoInstance;
 
+  PersonDao? _personDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 2,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -86,6 +88,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `reminderTB` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `pillName` TEXT NOT NULL, `date` TEXT NOT NULL, `time` TEXT NOT NULL, `useMode` TEXT NOT NULL, `count` TEXT NOT NULL, `description` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `personTable` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `image` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -96,6 +100,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   ReminderDao get reminderDao {
     return _reminderDaoInstance ??= _$ReminderDao(database, changeListener);
+  }
+
+  @override
+  PersonDao get personDao {
+    return _personDaoInstance ??= _$PersonDao(database, changeListener);
   }
 }
 
@@ -163,5 +172,60 @@ class _$ReminderDao extends ReminderDao {
   Future<void> insertData(ReminderEntity reminderEntity) async {
     await _reminderEntityInsertionAdapter.insert(
         reminderEntity, OnConflictStrategy.abort);
+  }
+}
+
+class _$PersonDao extends PersonDao {
+  _$PersonDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _personInfoEntityInsertionAdapter = InsertionAdapter(
+            database,
+            'personTable',
+            (PersonInfoEntity item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'image': item.image
+                }),
+        _personInfoEntityUpdateAdapter = UpdateAdapter(
+            database,
+            'personTable',
+            ['id'],
+            (PersonInfoEntity item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'image': item.image
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<PersonInfoEntity> _personInfoEntityInsertionAdapter;
+
+  final UpdateAdapter<PersonInfoEntity> _personInfoEntityUpdateAdapter;
+
+  @override
+  Future<PersonInfoEntity?> getPersonInfo() async {
+    return _queryAdapter.query('SELECT * FROM personTable',
+        mapper: (Map<String, Object?> row) => PersonInfoEntity(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            image: row['image'] as String));
+  }
+
+  @override
+  Future<void> insertData(PersonInfoEntity personInfoEntity) async {
+    await _personInfoEntityInsertionAdapter.insert(
+        personInfoEntity, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateInfo(PersonInfoEntity personInfoEntity) async {
+    await _personInfoEntityUpdateAdapter.update(
+        personInfoEntity, OnConflictStrategy.abort);
   }
 }

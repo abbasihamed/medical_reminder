@@ -1,5 +1,5 @@
 import 'package:medical_reminder/core/resource/data_state.dart';
-import 'package:medical_reminder/data/data_source/local/dao/reminder_doa.dart';
+import 'package:medical_reminder/data/data_source/local/dao/reminder_dao.dart';
 import 'package:medical_reminder/domain/entities/reminder_entity.dart';
 import 'package:medical_reminder/domain/repository/reminder_repository.dart';
 

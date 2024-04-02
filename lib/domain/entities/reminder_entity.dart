@@ -1,7 +1,7 @@
 import 'package:floor/floor.dart';
 import 'package:medical_reminder/core/constants/constants.dart';
 
-@Entity(tableName: tableName)
+@Entity(tableName: reminderTableName)
 class ReminderEntity {
   @PrimaryKey(autoGenerate: true)
   int? id;

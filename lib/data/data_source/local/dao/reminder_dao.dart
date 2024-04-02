@@ -7,12 +7,13 @@ abstract class ReminderDao {
   @Insert()
   Future<void> insertData(ReminderEntity reminderEntity);
 
-  @Query("SELECT * FROM $tableName")
+  @Query("SELECT * FROM $reminderTableName")
   Future<List<ReminderEntity?>> getAllReminders();
 
-  @Query("SELECT * FROM $tableName WHERE date = :date ORDER BY time ASC")
+  @Query(
+      "SELECT * FROM $reminderTableName WHERE date = :date ORDER BY time ASC")
   Future<List<ReminderEntity?>> getByDate(String date);
 
-  @Query("DELETE FROM $tableName WHERE id = :id")
+  @Query("DELETE FROM $reminderTableName WHERE id = :id")
   Future<void> deleteById(int id);
 }

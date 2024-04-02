@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
 import 'package:medical_reminder/presentations/cubits/manage_reminder/managereminder_cubit.dart';
+import 'package:medical_reminder/presentations/widgets/app_bar_title.dart';
 import 'package:medical_reminder/presentations/widgets/home_item.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
@@ -16,30 +17,29 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 75,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('کاربر مهمان'),
-            Text('امروز حالتان چطوره؟', style: context.textThem().titleMedium),
-          ],
-        ),
+        title: const HomeAppBarTitle(),
         leading: Align(
           alignment: Alignment.centerRight,
-          child: Container(
-            height: 70,
-            width: 70,
-            margin: const EdgeInsets.only(right: 8),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: context.theme().colorScheme.primary,
-                boxShadow: [
-                  BoxShadow(
-                    color: context.theme().colorScheme.primary,
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: const Offset(0, 0),
-                  )
-                ]),
+          child: InkWell(
+            onTap: () {},
+            child: Container(
+              height: 70,
+              width: 70,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.theme().colorScheme.primary,
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.theme().colorScheme.primary,
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: const Offset(0, 0),
+                    )
+                  ]),
+              child: const Icon(Icons.person_add_alt_1),
+            ),
           ),
         ),
         leadingWidth: 100,

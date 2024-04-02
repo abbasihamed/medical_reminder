@@ -12,6 +12,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final customNav = context.read<BottomnavCubit>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<BottomnavCubit, BottomnavState>(

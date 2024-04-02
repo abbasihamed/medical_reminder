@@ -14,9 +14,13 @@ class PersonRepositoryImpl implements PersonRepository {
   }
 
   @override
-  Future<DataState<bool>> insertInfo(PersonInfoEntity personInfoEntity) {
-    // TODO: implement insertInfo
-    throw UnimplementedError();
+  Future<DataState<bool>> insertInfo(PersonInfoEntity personInfoEntity) async {
+    try {
+      await _personDao.insertData(personInfoEntity);
+      return const DataSuccess(true);
+    } catch (e) {
+      return const DataFaild('');
+    }
   }
 
   @override

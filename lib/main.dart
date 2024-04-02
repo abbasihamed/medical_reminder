@@ -5,6 +5,7 @@ import 'package:medical_reminder/locator.dart';
 import 'package:medical_reminder/presentations/cubits/add_event/add_event_cubit.dart';
 import 'package:medical_reminder/presentations/cubits/bottomnav/bottomnav_cubit.dart';
 import 'package:medical_reminder/presentations/cubits/manage_reminder/managereminder_cubit.dart';
+import 'package:medical_reminder/presentations/cubits/person_info/person_info_cubit.dart';
 import 'package:medical_reminder/presentations/screens/main_screen.dart';
 
 void main(List<String> args) async {
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ManagereminderCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PersonInfoCubit(),
         ),
       ],
       child: MaterialApp(

@@ -8,6 +8,7 @@ import 'package:medical_reminder/domain/usecase/delete_by_id.dart';
 import 'package:medical_reminder/domain/usecase/get_all_reminder.dart';
 import 'package:medical_reminder/domain/usecase/get_by_date.dart';
 import 'package:medical_reminder/domain/usecase/insert_reminder.dart';
+import 'package:medical_reminder/domain/usecase/person_info/insert_person.dart';
 
 final locator = GetIt.instance;
 
@@ -31,4 +32,8 @@ Future<void> setup() async {
 
   locator.registerLazySingleton<DeleteReminderByIdUseCase>(
       () => DeleteReminderByIdUseCase(locator()));
+
+
+  locator.registerLazySingleton<InsertPersonInfoUseCase>(
+      () => InsertPersonInfoUseCase(locator()));
 }

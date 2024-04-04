@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
+import 'package:medical_reminder/presentations/cubits/person_info/person_info_cubit.dart';
 
 class HomeAppBarTitle extends StatefulWidget {
   const HomeAppBarTitle({
@@ -31,12 +33,17 @@ class _HomeAppBarTitleState extends State<HomeAppBarTitle> {
                     IconButton(
                       onPressed: () {
                         isEdit = false;
+                        context
+                            .read<PersonInfoCubit>()
+                            .setInfo(name: nameController.text.trim());
+                        nameController.clear();
                         setState(() {});
                       },
                       icon: const Icon(Icons.check),
                     ),
                     IconButton(
                       onPressed: () {
+                        nameController.clear();
                         isEdit = false;
                         setState(() {});
                       },
@@ -54,7 +61,19 @@ class _HomeAppBarTitleState extends State<HomeAppBarTitle> {
             children: [
               Row(
                 children: [
-                  const Text('کاربر مهمان'),
+                  BlocBuilder<PersonInfoCubit, PersonInfoState>(
+                    builder: (context, state) {
+                      if (state is GetPersonInfo) {
+                        final personInfoEntity = state.personInfoEntity;
+                        if (personInfoEntity != null) {
+                          return Text(personInfoEntity.name);
+                        }
+
+                        return const Text('کاربر مهمان');
+                      }
+                      return const Text('کاربر مهمان');
+                    },
+                  ),
                   IconButton(
                     onPressed: () {
                       isEdit = true;

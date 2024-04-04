@@ -4,7 +4,7 @@ import 'package:medical_reminder/domain/entities/person_info_entity.dart';
 
 @dao
 abstract class PersonDao {
-  @Insert()
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertData(PersonInfoEntity personInfoEntity);
 
   @Query("SELECT * FROM $personalTableName")

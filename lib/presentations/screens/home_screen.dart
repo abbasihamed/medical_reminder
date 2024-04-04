@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medical_reminder/core/extentions.dart';
 import 'package:medical_reminder/presentations/cubits/manage_reminder/managereminder_cubit.dart';
+import 'package:medical_reminder/presentations/cubits/person_info/person_info_cubit.dart';
 import 'package:medical_reminder/presentations/widgets/app_bar_title.dart';
 import 'package:medical_reminder/presentations/widgets/home_item.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
     context
         .read<ManagereminderCubit>()
         .getByDate(Jalali.now().toDateTime().toIso8601String());
+    context.read<PersonInfoCubit>().getPersonData();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 75,

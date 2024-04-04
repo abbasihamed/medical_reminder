@@ -8,16 +8,26 @@ class PersonRepositoryImpl implements PersonRepository {
 
   const PersonRepositoryImpl(this._personDao);
   @override
-  Future<DataState<PersonInfoEntity>> getData() {
-    // TODO: implement getData
-    throw UnimplementedError();
+  Future<DataState<PersonInfoEntity>> getData() async {
+    try {
+      final result = await _personDao.getPersonInfo();
+      return DataSuccess(result!);
+    } catch (e) {
+      return const DataFaild('');
+    }
   }
 
   @override
-  Future<DataState<bool>> insertInfo(PersonInfoEntity personInfoEntity) async {
+  Future<DataState<PersonInfoEntity>> insertInfo(
+      PersonInfoEntity personInfoEntity) async {
     try {
       await _personDao.insertData(personInfoEntity);
-      return const DataSuccess(true);
+      final info = await getData();
+      if (info is DataSuccess) {
+        return DataSuccess(info.data!);
+      } else {
+        return const DataFaild('');
+      }
     } catch (e) {
       return const DataFaild('');
     }
@@ -25,8 +35,17 @@ class PersonRepositoryImpl implements PersonRepository {
 
   @override
   Future<DataState<PersonInfoEntity>> updateData(
-      PersonInfoEntity personInfoEntity) {
-    // TODO: implement updateData
-    throw UnimplementedError();
+      PersonInfoEntity personInfoEntity) async {
+    try {
+      await _personDao.updateInfo(personInfoEntity);
+      final info = await getData();
+      if (info is DataSuccess) {
+        return DataSuccess(info.data!);
+      } else {
+        return const DataFaild('');
+      }
+    } catch (e) {
+      return const DataFaild('');
+    }
   }
 }

@@ -220,7 +220,7 @@ class _$PersonDao extends PersonDao {
   @override
   Future<void> insertData(PersonInfoEntity personInfoEntity) async {
     await _personInfoEntityInsertionAdapter.insert(
-        personInfoEntity, OnConflictStrategy.abort);
+        personInfoEntity, OnConflictStrategy.replace);
   }
 
   @override

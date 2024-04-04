@@ -3,14 +3,12 @@ import 'package:medical_reminder/core/usecase/usecase.dart';
 import 'package:medical_reminder/domain/entities/person_info_entity.dart';
 import 'package:medical_reminder/domain/repository/person_repository.dart';
 
-class InsertPersonInfoUseCase
-    implements UseCaseOne<DataState<PersonInfoEntity>, PersonInfoEntity> {
+class GetPersonInfoUseCase implements UseCase<DataState<PersonInfoEntity>> {
   final PersonRepository _personRepository;
 
-  const InsertPersonInfoUseCase(this._personRepository);
-
+  const GetPersonInfoUseCase(this._personRepository);
   @override
-  Future<DataState<PersonInfoEntity>> call(PersonInfoEntity p) async {
-    return await _personRepository.insertInfo(p);
+  Future<DataState<PersonInfoEntity>> call() async {
+    return await _personRepository.getData();
   }
 }
